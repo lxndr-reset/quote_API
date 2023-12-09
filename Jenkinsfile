@@ -10,7 +10,7 @@ pipeline{
                 sh 'mvn clean install -DskipTests'
             }
         }
-        stage('Build Docker image and push to DockerHub') {
+        stage('Build Docker image') {
             steps{
                 script{
                     sh 'docker-compose down'
@@ -18,13 +18,17 @@ pipeline{
                         sh 'docker-compose up --build -d'
                         sh 'docker image prune -af'
                     }
-                    script{
-                        withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd'), string(credentialsId: 'dockerhub-uname', variable: 'dockerhubusername')]) {
-                            sh 'docker login -u ${dockerhubusername} -p ${dockerhubpwd}'
-                        }
-                        sh 'docker push lxndrreset/quote_api'
-                    }
                 }
+            }
+        }
+        stage('Push docker image to DockerHub') {
+            steps {
+                 script{
+                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd'), string(credentialsId: 'dockerhub-uname', variable: 'dockerhubusername')]) {
+                        sh 'docker login -u ${dockerhubusername} -p ${dockerhubpwd}'
+                    }
+                    sh 'docker push lxndrreset/quote_api'
+                 }
             }
         }
     }
