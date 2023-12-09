@@ -40,11 +40,26 @@ class QuoteApiApplicationTests {
     }
 
     @Test
-    public void testUpvote_whenQuoteWasUpvotedAndFirstInGetTop10_thenTrue() {
+    public void testUpvote_whenQuoteWasUpvotedAndFirstInGetBest_thenTrue() {
         template.getForEntity("http://localhost:8080/api/v1/quote/up/7", Quote.class).getBody();
         Quote quote = template.getForEntity("http://localhost:8080/api/v1/quote/7", Quote.class).getBody();
 
         ResponseEntity<List<Quote>> response = template.exchange("http://localhost:8080/api/v1/quote/best", HttpMethod.GET, null,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+        List<Quote> bestQuotes = response.getBody();
+
+        assertNotNull(bestQuotes);
+        assertEquals(10, bestQuotes.size());
+        assertEquals(quote, bestQuotes.getFirst());
+    }
+    @Test
+    public void testDownvote_whenQuoteWasDownvotedAndFirstInGetWorst_thenTrue() {
+        template.getForEntity("http://localhost:8080/api/v1/quote/down/5", Quote.class).getBody();
+        Quote quote = template.getForEntity("http://localhost:8080/api/v1/quote/5", Quote.class).getBody();
+
+        ResponseEntity<List<Quote>> response = template.exchange("http://localhost:8080/api/v1/quote/worst", HttpMethod.GET, null,
                 new ParameterizedTypeReference<>() {
                 }
         );
