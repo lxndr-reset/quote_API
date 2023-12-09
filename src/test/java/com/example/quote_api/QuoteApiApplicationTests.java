@@ -3,8 +3,6 @@ package com.example.quote_api;
 import com.example.quote_api.entity.Quote;
 import com.example.quote_api.entity.User;
 import jakarta.annotation.PostConstruct;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
