@@ -75,7 +75,6 @@ public class Quote {
         return getRate() == quote.getRate()
                 && Objects.equals(getId(), quote.getId())
                 && Objects.equals(getName(), quote.getName())
-                && Objects.equals(getEditionDate(), quote.getEditionDate())
                 && Objects.equals(getUser(), quote.getUser());
     }
 
